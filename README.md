@@ -10,5 +10,5 @@ Skeleton before rails new.
 ## Command
 ```bash
 $ docker-compose build
-$ docker-compose run --rm api rails new . --database=mysql --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-active-storage --skip-active-job --skip-action-cable --skip-jbuilder -T -f --api
+$ docker-compose run --rm api rails new . --database=mysql --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-active-storage --skip-active-job --skip-action-cable --skip-jbuilder --skip-sprockets -T -f --api
 ```
