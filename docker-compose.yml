@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    platform: linux/x86_64 # for m1 mac build
+    image: mysql:8.0.26
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rails-db
+      MYSQL_ROOT_PASSWORD: rails-db
+    ports:
+      - 3326:3306
+    volumes:
+      - ./db/mysql/volumes:/var/lib/mysql
+  api:
+    tty: true
+    stdin_open: true
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && rails s -b '0.0.0.0'"
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - RDS_DB_NAME=rails-db
+      - RDS_PASSWORD=rails-db
+    depends_on:
+      - db
