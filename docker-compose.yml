@@ -4,7 +4,6 @@ services:
     platform: linux/x86_64 # for m1 mac build
     image: mysql:8.0.26
     environment:
-      MYSQL_USER: root
       MYSQL_PASSWORD: rails-db
       MYSQL_ROOT_PASSWORD: rails-db
     ports:
