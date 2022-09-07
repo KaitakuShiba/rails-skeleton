@@ -1,16 +1,17 @@
 version: '3'
 services:
   db:
-    platform: linux/x86_64 # for m1 mac build
-    image: mysql:8.0.26
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:14.5-bullseye
     environment:
-      MYSQL_PASSWORD: rails-db
-      MYSQL_ROOT_PASSWORD: rails-db
+      DB_USER: postgres
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    expose:
+      - 5432
     ports:
-      - 3326:3306
+      - 5432:5432
     volumes:
-      - ./db/mysql/volumes:/var/lib/mysql
+      - ./db/postgres:/var/lib/postgresql/data
   api:
     tty: true
     stdin_open: true
@@ -18,13 +19,14 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && rails s -b '0.0.0.0'"
     volumes:
       - .:/app
+    expose:
+      - 3000
     ports:
       - 3000:3000
-    build:
-      context: .
-      dockerfile: ./Dockerfile
     environment:
-      - RDS_DB_NAME=rails-db
-      - RDS_PASSWORD=rails-db
+      - DB_USER=postgres
+      - POSTGRES_PASSWORD=password
     depends_on:
       - db
+volumes:
+  data: {}
